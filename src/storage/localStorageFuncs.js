@@ -1,20 +1,24 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
-export const storeData = async (key,value) => {
-  try {
-    await AsyncStorage.setItem(key, value)
-  } catch (e) {
-    // saving error
-  }
+export async function storeData(itemName, itemData) {
+    try {
+        await EncryptedStorage.setItem(
+            itemName,
+            itemData
+        );
+    } catch (error) {
+        alert('Unexpected error');
+    }
 }
 
-export const getData = async (key) => {
-  try {
-    const value = await AsyncStorage.getItem(key)
-    if(value !== null) {
-        return value;
+export async function getData(itemName) {
+    try {
+        const session = await EncryptedStorage.getItem(itemName);
+
+        if (session !== undefined) {
+            return session;
+        }
+    } catch (error) {
+        alert('Unexpected error');
     }
-  } catch(e) {
-    // error reading value
-  }
 }
